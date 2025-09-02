@@ -83,76 +83,65 @@ def get_pull_requests(repo_info): # After extracting all repos, gets the PRs fro
         if not page_data:
             break
         for pr in page_data:
+            if pr.get("merged_at"):
 
-            # Fetch PR reviews to get the PR approvers.
-            reviews_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/pulls/{pr['number']}/reviews"
-            reviews_resp = requests.get(reviews_url, headers=headers)
-            approvers = []
-            if reviews_resp.status_code == 200:
-                reviews_data = reviews_resp.json()
-                approvers = [r["user"]["login"] for r in reviews_data if r["state"] == "APPROVED"]
+                # Fetch PR reviews to get the PR approvers.
+                reviews_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/pulls/{pr['number']}/reviews"
+                reviews_resp = requests.get(reviews_url, headers=headers)
+                approvers = []
 
-                # Want to make there is at least 1 reviewer for the PR if it was merged.
-                if len(set(approvers)) > 0:
-                    multiple_approvers = len(approvers) # Show number of approvers.
-                    cr_passed = True #if it has at least one approver passed code review.
+                if reviews_resp.status_code == 200:
+                    reviews_data = reviews_resp.json()
+                    approvers = [r["user"]["login"] for r in reviews_data if r["state"] == "APPROVED"]
+
+                    # Want to make there is at least 1 reviewer for the PR if it was merged.
+                    multiple_approvers = len(approvers)
                 else:
-                    multiple_approvers = None
-                    cr_passed = False
-            else:
-                # Tells us if there was an error collecting the reviewers for a PR, the PR number and the repo it is from.
-                print(f"Warning: Could not fetch reviews for PR #{pr['number']} in {repo_name}")
+                    # Tells us if there was an error collecting the reviewers for a PR, the PR number and the repo it is from.
+                    print(f"Warning: Could not fetch reviews for PR #{pr['number']} in {repo_name}")
 
-            # Fetch status of the last commit to check if it has status checks and all required status checks passed.
-            commit_sha = pr["head"]["sha"]
-            status_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/commits/{commit_sha}/status"
-            status_resp = requests.get(status_url, headers=headers)
+                # Fetch status of the last commit to check if it has status checks and all required status checks passed.
+                commit_sha = pr["head"]["sha"]
+                status_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/commits/{commit_sha}/status"
+                status_resp = requests.get(status_url, headers=headers)
 
-            has_checks = False
-            all_checks_passed = False
-            is_compliant = False
+                has_checks = False
+                all_checks_passed = False
 
-            if status_resp.status_code == 200:
-                status_data = status_resp.json()
-                checks = status_data.get("statuses", [])  
-                # list of individual checks for a PR.
-    
-                if len(checks) > 0:  # there is atleast one check for the PR.
-                    has_checks = True
-                    all_checks_passed = status_data.get("state") == "success"
+                if status_resp.status_code == 200:
+                    status_data = status_resp.json()
+                    checks = status_data.get("statuses", [])  
+                    # list of individual checks for a PR.
+        
+                    if len(checks) > 0:  # there is atleast one check for the PR.
+                        has_checks = True
+                        all_checks_passed = status_data.get("state") == "success"
+                    else:
+                        # no checks configured for this PR.
+                        has_checks = False
+                        all_checks_passed = None #returns null as if there are no checks, then no output for if all checks have been passed. 
+
                 else:
-                    # no checks configured for this PR.
-                    has_checks = False
-                    all_checks_passed = None #returns null as if there are no checks, then no output for if all checks have been passed. 
+                    print(f"Warning: Could not fetch status for commit {commit_sha} in {repo_name}")
+                    # Tells us if there was an error collecting the status for the PR, what the commit status was and the repo it is from. 
 
-                if all_checks_passed == True and len(approvers) >0:
-                    is_compliant = True
-                elif all_checks_passed == None:
-                    is_compliant = None
+                # Extracts neccesary info from each repo pull request and stores it in a dictionary and moves to next page until no more repos remain. 
+                prs.append({
+                    "repo_id": repo_id,
+                    "repo_name": repo_name,
+                    "repo_owner": repo_owner,
+                    "org_name": org_name,
+                    "pr_id": pr["id"],
+                    "pr_number": pr["number"],
+                    "title": pr["title"],
+                    "author": pr["user"]["login"],
+                    "merged_at": pr.get("merged_at"),
+                    "approvers": multiple_approvers,
+                    "has_checks": has_checks,
+                    "CHECKS_PASSED": all_checks_passed
+                })
 
-            else:
-                print(f"Warning: Could not fetch status for commit {commit_sha} in {repo_name}")
-                # Tells us if there was an error collecting the status for the PR, what the commit status was and the repo it is from. 
-
-            # Extracts neccesary info from each repo pull request and stores it in a dictionary and moves to next page until no more repos remain. 
-            prs.append({
-                "repo_id": repo_id,
-                "repo_name": repo_name,
-                "repo_owner": repo_owner,
-                "org_name": org_name,
-                "pr_id": pr["id"],
-                "pr_number": pr["number"],
-                "title": pr["title"],
-                "author": pr["user"]["login"],
-                "merged_at": pr.get("merged_at"),
-                "approvers": multiple_approvers,
-                "CR_passed": cr_passed,
-                "has_checks": has_checks,
-                "CHECKS_PASSED": all_checks_passed,
-                "is_compliant": is_compliant, #This checks that the PR was merged only after passing review. 
-            })
-
-            # We also want the number of pull request and merged requests, here we count number of prs and merged prs.
+                # We also want the number of pull request and merged requests, here we count number of prs and merged prs.
 
         page += 1
     return prs

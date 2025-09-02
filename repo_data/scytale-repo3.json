@@ -10,11 +10,9 @@
             "title": "avi pull request",
             "author": "aviyashar",
             "merged_at": "2023-11-21T12:29:07Z",
-            "approvers": null,
-            "CR_passed": false,
+            "approvers": 0,
             "has_checks": false,
-            "CHECKS_PASSED": null,
-            "is_compliant": null
+            "CHECKS_PASSED": null
         },
         {
             "repo_id": 721612130,
@@ -26,11 +24,9 @@
             "title": "Feature/eva",
             "author": "aviyashar",
             "merged_at": "2023-11-21T12:27:11Z",
-            "approvers": null,
-            "CR_passed": false,
+            "approvers": 0,
             "has_checks": false,
-            "CHECKS_PASSED": null,
-            "is_compliant": null
+            "CHECKS_PASSED": null
         },
         {
             "repo_id": 721612130,
@@ -42,11 +38,9 @@
             "title": "Update README.md",
             "author": "aviyashar",
             "merged_at": "2023-11-21T12:25:14Z",
-            "approvers": null,
-            "CR_passed": false,
+            "approvers": 0,
             "has_checks": false,
-            "CHECKS_PASSED": null,
-            "is_compliant": null
+            "CHECKS_PASSED": null
         },
         {
             "repo_id": 721612130,
@@ -58,11 +52,9 @@
             "title": "Chore/ops 197/last fixes before publishing",
             "author": "aviyashar",
             "merged_at": "2023-11-21T12:23:48Z",
-            "approvers": null,
-            "CR_passed": false,
+            "approvers": 0,
             "has_checks": false,
-            "CHECKS_PASSED": null,
-            "is_compliant": null
+            "CHECKS_PASSED": null
         }
     ]
 }

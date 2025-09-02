@@ -10,11 +10,9 @@
             "title": "Update README.md",
             "author": "aviyashar",
             "merged_at": "2023-11-27T13:34:05Z",
-            "approvers": null,
-            "CR_passed": false,
+            "approvers": 0,
             "has_checks": false,
-            "CHECKS_PASSED": null,
-            "is_compliant": null
+            "CHECKS_PASSED": null
         }
     ]
 }

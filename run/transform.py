@@ -27,11 +27,10 @@ schema = StructType([
             StructField("title", StringType(), True),
             StructField("author", StringType(), True),
             StructField("merged_at", StringType(), True),
-            StructField("approvers", StringType(), True),
-            StructField("CR_passed", StringType(),True),
+            StructField("approvers", LongType(), True),
             StructField("has_checks", StringType(),True),
             StructField("CHECKS_PASSED", StringType(),True),
-            StructField("is_compliant", StringType(),True)
+
         ])
     ), True)
 ])
@@ -43,13 +42,26 @@ prs_df = spark.read.schema(schema).option("multiline", True).json("../repo_data/
 # use the schema above to interpret the JSON files, and produce a dataframe wehere each row contains the info from a single JSON object array. 
 
 df_flat = prs_df.select(f.explode("pull_requests").alias("pr")).select("pr.*")
+
+df_final = df_flat.withColumn(
+    "passed_CR",
+    f.when((f.col("approvers") > 0) & (f.col("has_checks") == True), f.lit("true"))
+     .otherwise(f.lit("false"))
+)
+
+df_final = df_final.withColumn(
+    "is_compliant",
+    f.when((f.col("approvers") > 0) & (f.col("CHECKS_PASSED") == True), f.lit("true"))
+     .when(f.col("CHECKS_PASSED").isNull(), f.lit("NULL"))
+     .otherwise(f.lit("false"))
+)
 # we want each element of the array to have its own row, and flatten the nested structure so that all PR fiels are top-level columns in our new dataframe. 
 
 # ---------------
 # Create Filters
 # ---------------
 
-filtered_df = df_flat
+filtered_df = df_final
 
 parser = args.ArgumentParser(description="Process PR data with filters")
 parser.add_argument("--start_date", type=str, help="Start date (YYYY-MM-DD)")
