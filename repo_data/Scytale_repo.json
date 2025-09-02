@@ -1,0 +1,34 @@
+{
+    "pull_requests": [
+        {
+            "repo_id": 724133322,
+            "repo_name": "Scytale_repo",
+            "repo_owner": "Scytale-exercise",
+            "org_name": "scytale-exercise",
+            "pr_id": 1618052348,
+            "pr_number": 2,
+            "title": "Open PR",
+            "author": "aviyashar",
+            "merged_at": null,
+            "approvers": null,
+            "CR_passed": false,
+            "has_checks": false,
+            "CHECKS_PASSED": null
+        },
+        {
+            "repo_id": 724133322,
+            "repo_name": "Scytale_repo",
+            "repo_owner": "Scytale-exercise",
+            "org_name": "scytale-exercise",
+            "pr_id": 1618006346,
+            "pr_number": 1,
+            "title": "Open pr",
+            "author": "aviyashar",
+            "merged_at": null,
+            "approvers": null,
+            "CR_passed": false,
+            "has_checks": false,
+            "CHECKS_PASSED": null
+        }
+    ]
+}
