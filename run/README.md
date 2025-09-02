@@ -39,3 +39,8 @@ This filter will check if all required checks were passed for a PR,
 ```
 --passed_checks
 ```
+### Is Compliant
+This filter checks if the PR that was merged is complaint but checking that the merged PR passed all required checks if there are any.
+```
+--is_compliant
+```

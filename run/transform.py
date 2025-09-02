@@ -31,6 +31,7 @@ schema = StructType([
             StructField("CR_passed", StringType(),True),
             StructField("has_checks", StringType(),True),
             StructField("CHECKS_PASSED", StringType(),True),
+            StructField("is_compliant", StringType(),True)
         ])
     ), True)
 ])
@@ -58,6 +59,7 @@ parser.add_argument("--PR_merged", action="store_true", help="Only include merge
 parser.add_argument("--author", type=str, help="Filter PRs by author")
 parser.add_argument("--repo", type=str, help="Filter PRs by repo name")
 parser.add_argument("--passed_checks", action="store_true", help="Only include PRs where all checks passed")
+parser.add_argument("--is_compliant", action="store_true", help="Only include PRs which are compliant")
 args = parser.parse_args()
 
 # Adding some filters
@@ -87,6 +89,10 @@ if args.repo:
 # If all checks were passed
 if args.passed_checks:
     filtered_df = filtered_df.filter(f.col("CHECKS_PASSED") == "True")
+
+# Check is PR is compliant
+if args.is_compliant:
+    filtered_df = filtered_df.filter(f.col("is_compliant") == "True")
 
 # We want to the output to be sorted by date starting at the lastest merge
 sorted_df = filtered_df.orderBy(f.col("merged_at").desc())

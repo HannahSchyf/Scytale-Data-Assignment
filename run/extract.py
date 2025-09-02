@@ -110,6 +110,7 @@ def get_pull_requests(repo_info): # After extracting all repos, gets the PRs fro
 
             has_checks = False
             all_checks_passed = False
+            is_compliant = False
 
             if status_resp.status_code == 200:
                 status_data = status_resp.json()
@@ -123,6 +124,12 @@ def get_pull_requests(repo_info): # After extracting all repos, gets the PRs fro
                     # no checks configured for this PR.
                     has_checks = False
                     all_checks_passed = None #returns null as if there are no checks, then no output for if all checks have been passed. 
+
+                if all_checks_passed == True and len(approvers) >0:
+                    is_compliant = True
+                elif all_checks_passed == None:
+                    is_compliant = None
+
             else:
                 print(f"Warning: Could not fetch status for commit {commit_sha} in {repo_name}")
                 # Tells us if there was an error collecting the status for the PR, what the commit status was and the repo it is from. 
@@ -141,7 +148,8 @@ def get_pull_requests(repo_info): # After extracting all repos, gets the PRs fro
                 "approvers": multiple_approvers,
                 "CR_passed": cr_passed,
                 "has_checks": has_checks,
-                "CHECKS_PASSED": all_checks_passed
+                "CHECKS_PASSED": all_checks_passed,
+                "is_compliant": is_compliant, #This checks that the PR was merged only after passing review. 
             })
 
             # We also want the number of pull request and merged requests, here we count number of prs and merged prs.

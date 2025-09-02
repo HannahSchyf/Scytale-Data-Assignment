@@ -13,7 +13,8 @@
             "approvers": null,
             "CR_passed": false,
             "has_checks": false,
-            "CHECKS_PASSED": null
+            "CHECKS_PASSED": null,
+            "is_compliant": null
         },
         {
             "repo_id": 724133322,
@@ -28,7 +29,8 @@
             "approvers": null,
             "CR_passed": false,
             "has_checks": false,
-            "CHECKS_PASSED": null
+            "CHECKS_PASSED": null,
+            "is_compliant": null
         }
     ]
 }
