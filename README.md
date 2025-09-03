@@ -11,6 +11,7 @@ Java (version is dependent on the version of PySpark you install)
 You will need to have a GitHub personal access token ( it is recommended to create a fine grained PAT) <br />
 Once this is done you will need to add this as an enviroment.<br />
 #### Linux/MacOS
+Open your terminal <br />
 For bash: ~/.bashrc <br />
 For zsh: ~/.zshrc
 ```
@@ -18,6 +19,7 @@ echo 'export GITHUB_TOKEN='yourPersonalAccessTokenHere'' >> ~/.bashrc
 source ~/.bashrc
 ```
 #### Windows (PowerShell)
+Open Powershell 
 ```
 setx GITHUB_TOKEN "yourPersonalAccessTokenHere"
 echo $env:GITHUB_TOKEN
