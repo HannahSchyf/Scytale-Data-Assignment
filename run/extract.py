@@ -16,7 +16,8 @@ ORG_NAME = args.org  # Get org name from command line
 token = os.getenv("GITHUB_TOKEN")  # GitHub token from environment
 
 headers = {
-    "Accept": "application/vnd.github.v3+json"
+    "Accept": "application/vnd.github.v3+json",
+    "Authorization": f"token {token}"
 }
 # -------------------------
 # Get all repos in the org
@@ -28,9 +29,6 @@ def get_all_repos(org): # Function to get all repos from specific organization "
     # Fetch repos from the GitHub API page by page.
     while True:
         url = f"https://api.github.com/orgs/{org}/repos?per_page=100&page={page}"
-        headers = {
-            'Authorization': f'token {token}'
-        }
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
             print(f"Error fetching repos: {response.status_code}")
@@ -71,9 +69,6 @@ def get_pull_requests(repo_info): # After extracting all repos, gets the PRs fro
     # Fetch repos PRs from the GitHub API page by page.
     while True:
         url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/pulls?state=all&per_page=100&page={page}"
-        headers = {
-            'Authorization': f'token {token}'
-        }
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
             print(f"Error fetching PRs for {repo_name}: {response.status_code}")
