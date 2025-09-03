@@ -2,18 +2,33 @@
 ### The Scytale data assignment gets the repository from an organisation, and then gets all repos and their pull requests, saves the necessary pull request information in JSON files and convert them to a table with PySpark.   
 
 ## Getting started
-#### Requirements
+### Requirements
 Python (3.9 or above) <br />
 Pyspark (3.0.0 or above) <br />
 Java (version is dependent on the version of PySpark you install)
 
-#### Clone the directory
+### GitHub PAT
+You will need to have a GitHub personal access token ( it is recommended to create a fine grained PAT) <br />
+Once this is done you will need to add this as an enviroment.<br />
+#### Linux/MacOS
+For bash: ~/.bashrc <br />
+For zsh: ~/.zshrc
+```
+echo 'export GITHUB_TOKEN='yourPersonalAccessTokenHere'' >> ~/.bashrc
+source ~/.bashrc
+```
+#### Windows (PowerShell)
+```
+setx GITHUB_TOKEN "yourPersonalAccessTokenHere"
+echo $env:GITHUB_TOKEN
+```
+### Clone the directory
 
 ```
 git clone https://github.com/hannahschyf-boop/Scytale-Data-Assignment-.git
 cd Scytale-Data-Assignment
 ```
-#### In the Scytale-Data-Assignment directory you will find a directory run.
+### In the Scytale-Data-Assignment directory you will find a directory named run.
 
 ## Step one - Getting the organisation repos and PRs
 This is done by running the extract.py script.
