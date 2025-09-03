@@ -66,12 +66,12 @@ filtered_df = df_final
 parser = args.ArgumentParser(description="Process PR data with filters")
 parser.add_argument("--start_date", type=str, help="Start date (YYYY-MM-DD)")
 parser.add_argument("--end_date", type=str, help="End date (YYYY-MM-DD)")
-parser.add_argument("--passed_CR", action="store_true", help="Passed CR")
+parser.add_argument("--passed_CR", action="store_true", help="Only include PRs which have passed CR")
 parser.add_argument("--PR_merged", action="store_true", help="Only include merged PRs")
 parser.add_argument("--author", type=str, help="Filter PRs by author")
 parser.add_argument("--repo", type=str, help="Filter PRs by repo name")
 parser.add_argument("--passed_checks", action="store_true", help="Only include PRs where all checks passed")
-parser.add_argument("--is_compliant", action="store_true", help="Only include PRs which are compliant")
+parser.add_argument("--is_compliant", action="store_true", help="Only include PRs which have been approved and pass all checks")
 args = parser.parse_args()
 
 # Adding some filters
