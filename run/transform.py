@@ -26,9 +26,9 @@ schema = StructType([
             StructField("pr_number", LongType(), True),
             StructField("title", StringType(), True),
             StructField("author", StringType(), True),
-            StructField("merged_at", StringType(), True),
-            StructField("approvers", LongType(), True),
-            StructField("has_checks", StringType(),True),
+            StructField("merged_at", TimestampType(), True),
+            StructField("approvers", IntegerType(), True),
+            StructField("has_checks", BooleanType(),True),
             StructField("CHECKS_PASSED", StringType(),True),
 
         ])
@@ -115,5 +115,5 @@ sorted_df.write.parquet('/home/hannah/Scytale/extract.pqt', mode="overwrite")
 # if you want to double check the information is being saved to a parquet correctly
 # df_check = spark.read.parquet('/home/hannah/Scytale/extract.pqt')
 # df_check.show(truncate=False)
-
+print ()
 print(f"Data successfully saved to Parquet") 
