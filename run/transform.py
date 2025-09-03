@@ -109,10 +109,12 @@ if args.is_compliant:
 # We want to the output to be sorted by date starting at the lastest merge
 sorted_df = filtered_df.orderBy(f.col("merged_at").desc())
 sorted_df.show(truncate=False)
-# Save to Parquet
-sorted_df.write.parquet('/home/hannah/Scytale/extract.pqt', mode="overwrite")
 
-# if you want to double check the information is being saved to a parquet correctly
+# Save to Parquet
+sorted_df.write.parquet('../Merged_PRs.pqt', mode="overwrite")
+
+# if you want to double check the information is being saved to a parquet correctly uncomment below. 
+
 # df_check = spark.read.parquet('/home/hannah/Scytale/extract.pqt')
 # df_check.show(truncate=False)
 print ()

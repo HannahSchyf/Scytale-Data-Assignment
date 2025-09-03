@@ -28,6 +28,8 @@ This is done by running the transform.py script, this is also in the run directo
 ```
 python transform.py
 ```
+This saves the manipulated data in a parquet file ../Merged_PRs.pqt.
+
 ## Additional filters
 If you would like to filter the output data from the transform level, this can be done by using a flag filter.
 ```
