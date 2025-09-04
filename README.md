@@ -19,14 +19,14 @@ cd run
 python extract.py --org "Your organisation name"
 ```
 This will create JSON files for each repo in the organisation, where the PRs are saved with all necessary information. 
-These files are found in the repo_data directory. 
+These files are found in the repo_data/{ORG_NAME} directory. 
 
 ## Step two - transforming the data 
 Here the data from the JSON files are transformed to a Spark schema table. The data is then flattened to produce a data frame where each PR has its own row with the necessary information. 
 This is done by running the transform.py script, this is also in the run directory.
 
 ```
-python transform.py
+python transform.py --org "Your organisation name
 ```
 This saves the manipulated data in a parquet file ../Merged_PRs.pqt.
 

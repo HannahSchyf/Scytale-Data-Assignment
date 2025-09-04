@@ -12,7 +12,11 @@ import argparse as args
 spark = SparkSession.builder.appName("DataTransform").getOrCreate()
 sc = spark.sparkContext
 # We set up a spark spession we have called DataTransform and get the spark context (this is needed for RDD).
+parser = args.ArgumentParser(description="Get organization and filters")
+parser.add_argument("--org", type=str, required=True, help="GitHub organization name")
+args = parser.parse_args()
 
+ORG_NAME = args.org  # Get org name from command line
 # We want to create a schema spark table which tells spark what fields to expect and their types from the JSON files. 
 schema = StructType([
     StructField("pull_requests", ArrayType( # Our JSON is nested since we have multiple PRs in some, this tells the schema it is an array of structured objects.
@@ -37,7 +41,7 @@ schema = StructType([
 # -----------------------
 # Read JSON using schema
 # -----------------------
-prs_df = spark.read.schema(schema).option("multiline", True).json("../repo_data/*.json")
+prs_df = spark.read.schema(schema).option("multiline", True).json(f"../repo_data/{ORG_NAME}/*.json")
 # use the schema above to interpret the JSON files, and produce a dataframe wehere each row contains the info from a single JSON object array. 
 
 df_flat = prs_df.select(f.explode("pull_requests").alias("pr")).select("pr.*")
@@ -62,7 +66,7 @@ df_final = df_final.withColumn(
 
 filtered_df = df_final
 
-parser = args.ArgumentParser(description="Process PR data with filters")
+#parser = args.ArgumentParser(description="Process PR data with filters")
 parser.add_argument("--start_date", type=str, help="Start date (YYYY-MM-DD)")
 parser.add_argument("--end_date", type=str, help="End date (YYYY-MM-DD)")
 parser.add_argument("--passed_CR", action="store_true", help="Only include PRs which have passed CR")
