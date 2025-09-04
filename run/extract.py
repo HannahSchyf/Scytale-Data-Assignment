@@ -149,7 +149,7 @@ if __name__ == "__main__":
     repos = get_all_repos(ORG_NAME)
 
     # Create a directory for the output files unless the directory already exits
-    os.makedirs("../repo_data", exist_ok=True)
+    os.makedirs(f"../repo_data/{ORG_NAME}/", exist_ok=True)
 
     for repo in repos:
         prs = get_pull_requests(repo)
@@ -159,9 +159,10 @@ if __name__ == "__main__":
         }
 
         # Create a .json file for each repo with PR details and save in the directory we created.
-        filename = os.path.join("../repo_data", f"{repo['repo_name']}.json")
+        if len(prs) > 0:
+            filename = os.path.join(f"../repo_data/{ORG_NAME}/", f"{repo['repo_name']}.json")
 
-        with open(filename, "w", encoding="utf-8") as f:
-            json.dump(repo_data, f, indent=4)
-        
-        print(f"Saved data for {repo['repo_name']} → {filename}")
+            with open(filename, "w", encoding="utf-8") as f:
+                json.dump(repo_data, f, indent=4)
+            
+            print(f"Saved data for {repo['repo_name']} → {filename}")

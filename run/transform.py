@@ -4,7 +4,6 @@ from pyspark.sql.functions import explode
 from pyspark.sql.types import *
 from pyspark import SparkContext
 import argparse as args
-
 #import relevant libraries
 
 # ------------
