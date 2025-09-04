@@ -33,7 +33,7 @@ This saves the manipulated data in a parquet file ../Merged_PRs.pqt.
 ## Additional filters
 If you would like to filter the output data from the transform level, this can be done by using a flag filter.
 ```
-python transform.py --some-flag flag_argument
+python transform.py --org "Your organisation name --some-flag flag_argument
 ```
 A list of possible flags is given in the README.md file in the run directory. 
 
